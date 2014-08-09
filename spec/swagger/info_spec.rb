@@ -4,7 +4,7 @@ module Swagger
   module V2
     describe Info do
       context 'Sample petstore API' do
-        let(:swagger_file) { 'swagger_spec/examples/wordnik/petstore-full.yaml' }
+        let(:swagger_file) { 'spec/fixtures/petstore-full.yaml' }
         let(:swagger) { Swagger.load swagger_file }
         subject { swagger.info }
 

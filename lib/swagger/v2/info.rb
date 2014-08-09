@@ -2,26 +2,22 @@ module Swagger
   module V2
     class Info < DefinitionSection
       class Contact < DefinitionSection
-        property :name
-        property :url
-        coerce_key :url, Swagger::URI
-        property :email
+        section :name, String
+        section :url, Swagger::URI
+        section :email, String
       end
 
       class License < DefinitionSection
-        property :name
-        property :url
-        coerce_key :url, Swagger::URI
+        required_section :name, String
+        section :url, Swagger::URI
       end
 
-      property :version, required: true
-      property :title, required: true
-      property :description
-      property :termsOfService
-      property :contact
-      coerce_key :contact, Contact
-      property :license
-      coerce_key :license, License
+      required_section :version, String
+      required_section :title, String
+      section :description, String
+      section :termsOfService, String
+      section :contact, Contact
+      section :license, License
     end
   end
 end

@@ -18,7 +18,7 @@ describe Swagger do
     end
 
     context 'yaml' do
-      let(:swagger_file) { 'swagger_spec/examples/wordnik/petstore.yaml' }
+      let(:swagger_file) { 'swagger_spec/examples/wordnik/petstore.json' }
       include_examples 'swagger loading'
     end
   end

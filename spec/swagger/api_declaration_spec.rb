@@ -3,7 +3,7 @@ require 'spec_helper'
 module Swagger
   module V2
     describe APIDeclaration do
-      let(:swagger_file) { 'swagger_spec/examples/wordnik/petstore-full.yaml' }
+      let(:swagger_file) { 'spec/fixtures/petstore-full.yaml' }
       let(:swagger) { Swagger.load swagger_file }
       let(:expected_host) { 'petstore.swagger.wordnik.com' }
       let(:expected_basePath) { '/api' }
@@ -56,6 +56,20 @@ module Swagger
           subject { swagger.schemes }
           it { is_expected.to eq(%w(http https ws wss)) }
         end
+
+        describe '#consumes' do
+          subject { swagger.consumes }
+          it { is_expected.to eq(%w(application/json application/xml)) }
+        end
+
+        describe '#produces' do
+          subject { swagger.produces }
+          it { is_expected.to eq(%w(application/vnd.max+json application/xml)) }
+        end
+
+        skip '#paths'
+        skip '#definitions'
+        skip '#security'
       end
     end
   end
