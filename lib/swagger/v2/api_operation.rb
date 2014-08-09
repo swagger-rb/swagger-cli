@@ -1,6 +1,10 @@
+require 'swagger/v2/parameter'
+
 module Swagger
   module V2
     class APIOperation < DefinitionSection
+      attr_accessor :path
+
       required_section :verb, Symbol
       section :summary, String
       section :description, String
@@ -8,9 +12,13 @@ module Swagger
       section :produces, Array[String]
       section :consumes, Array[String]
       section :tags, Array[String]
-      section :parameters, Array # [ Type? ]
+      section :parameters, Array[Parameter]
       section :responses, Hash # Type?
       section :schemes, Array[String]
+
+      def uri_template
+        "#{parent.host}#{parent.base_path}#{path}"
+      end
 
       def self.coerce(orig_hash)
         fail TypeError, 'Can only coerce from a hash' unless orig_hash.is_a? Hash

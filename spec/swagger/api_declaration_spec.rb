@@ -8,7 +8,7 @@ module Swagger
       let(:expected_host) { 'petstore.swagger.wordnik.com' }
       let(:expected_basePath) { '/api' }
 
-      context 'extras' do
+      skip 'extras' do
         # These are utility methods, not part of the Swagger specification
         describe '#validate' do
           it 'returns true if the Swagger definition complies with the Swagger schema' do

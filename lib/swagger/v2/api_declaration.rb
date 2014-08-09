@@ -19,6 +19,16 @@ module Swagger
       section :schemas, Hash
       section :definitions, Hash
       section :security, Array
+      # FIXME: Doesn't :parameter exist at this level as well?
+
+      attr_reader :apis
+
+      alias_method :base_path, :basePath
+
+      def initialize(hash)
+        super
+        attach_to_apis
+      end
 
       def uri_template
         # FIXME: Can I be safely memoized?
@@ -48,6 +58,15 @@ module Swagger
         #   .gsub('http://json-schema.org/draft-04/schema', "file://#{SWAGGER_SCHEMA}"))
         # @swagger_schema['$schema'] = 'http://json-schema.org/draft-04/schema#'
         # @swagger_schema
+      end
+
+      def attach_to_apis
+        @apis ||= Set.new
+        paths.each do |path, api|
+          api.path = path
+          api.parent = self
+          @apis << api
+        end
       end
     end
   end

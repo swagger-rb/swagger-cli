@@ -10,7 +10,6 @@ require 'swagger/uri'
 require 'swagger/uri_template'
 require 'swagger/loaders'
 require 'swagger/api_declaration'
-require 'swagger/api_operation'
 
 module Swagger
   class InvalidDefinition < StandardError
