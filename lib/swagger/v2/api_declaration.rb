@@ -4,8 +4,8 @@ require 'swagger/v2/api_operation'
 
 module Swagger
   module V2
-    SWAGGER_SCHEMA = File.expand_path '../../../../resources/schemas/swagger/v2.0/schema.json', __FILE__
-    JSON_SCHEMA = File.expand_path '../../../../resources/schemas/json_schema/draft-04.json', __FILE__
+    SWAGGER_SCHEMA = File.expand_path 'schemas/swagger/v2.0/schema.json', Swagger::RESOURCES_DIR
+    JSON_SCHEMA = File.expand_path 'schemas/json_schema/draft-04.json', Swagger::RESOURCES_DIR
 
     class APIDeclaration < Swagger::APIDeclaration
       required_section :swagger, Float
@@ -31,8 +31,9 @@ module Swagger
       end
 
       def uri_template
-        # FIXME: Can I be safely memoized?
-        Addressable::Template.new("#{host}#{basePath}")
+        # TODO: Can calculated values be safely memoized?
+        # TODO: Actual URI Template objects or just strings?
+        "#{host}#{basePath}"
       end
 
       def fully_validate

@@ -5,6 +5,6 @@ require 'swagger/thor/cli'
 
 module Swagger
   module Thor
-    TEMPLATE_DIR = File.expand_path('../../../templates', __FILE__)
+    TEMPLATE_DIR = File.expand_path 'templates/', Swagger::RESOURCES_DIR
   end
 end

@@ -1,0 +1,23 @@
+module <%= name.camelize %>
+  class API < Grape::API
+    prefix '<%= @swagger.base_path %>'
+
+    <% @swagger.paths.each do | path, operation | %>
+    params do
+      <% path.parameters.each do | param |  %>
+      <% if param.required %>
+      required <%= param.name.inspect %>, type: <%= param.type.inspect %>
+      <% else %>
+      optional <%= param.name.inspect %>, type: <%= param.type.inspect %>
+      <% end %>
+      <% end %>
+    end
+
+    namespace <%= operation.path.inspect %> do
+      desc '<%= operation.summary %>'
+      <%= operation.verb %> do
+      end
+    end
+    <% end %>
+  end
+end
