@@ -2,22 +2,34 @@ module <%= name.camelize %>
   class API < Grape::API
     prefix '<%= @swagger.base_path %>'
 
-    <% @swagger.paths.each do | path, operation | %>
+    <%- @swagger.paths.each do | path, path_object | -%>
     params do
-      <% path.parameters.each do | param |  %>
-      <% if param.required %>
-      required <%= param.name.inspect %>, type: <%= param.type.inspect %>
-      <% else %>
+      <%- path_object.parameters.each do | param |  -%>
+      <%- if param.required -%>
+      requires <%= param.name.inspect %>, type: <%= param.type.inspect %>
+      <%- else -%>
       optional <%= param.name.inspect %>, type: <%= param.type.inspect %>
-      <% end %>
-      <% end %>
+      <%- end -%>
+      <%- end -%>
+    end
+    namespace <%= path_object.path.inspect %> do
+      <%- path_object.operations.each_value do | operation | -%>
+      desc '<%= operation.summary %>'
+      params do
+        <%- operation.parameters.each do | param |  -%>
+        <%- if param.required -%>
+        requires <%= param.name.inspect %>, type: <%= param.type.inspect %>
+        <%- else -%>
+        optional <%= param.name.inspect %>, type: <%= param.type.inspect %>
+        <%- end -%>
+        <%- end -%>
+      end
+      <%= operation.verb %> do
+        # Implement me!
+      end
+      <%- end -%>
     end
 
-    namespace <%= operation.path.inspect %> do
-      desc '<%= operation.summary %>'
-      <%= operation.verb %> do
-      end
-    end
-    <% end %>
+    <%- end -%>
   end
 end
