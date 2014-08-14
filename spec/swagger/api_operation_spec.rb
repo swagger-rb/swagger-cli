@@ -6,12 +6,12 @@ module Swagger
       context 'Sample petstore API' do
         let(:swagger_file) { 'spec/fixtures/petstore-full.yaml' }
         let(:swagger) { Swagger.load swagger_file }
-        subject { swagger.paths['/pets'] }
+        subject { swagger.paths['/pets'].get }
 
         context 'calculated fields' do # not defined directly in the swagger spec
           describe '#parent' do
-            subject { swagger.paths['/pets'].parent }
-            it { is_expected.to eq(swagger) }
+            subject { swagger.paths['/pets'].get.parent }
+            it { is_expected.to eq(swagger.paths['/pets']) }
           end
 
           describe '#uri_template' do
@@ -22,18 +22,18 @@ module Swagger
         end
 
         describe '#tags' do
-          subject { swagger.paths['/pets'].tags }
+          subject { swagger.paths['/pets'].get.tags }
           it { is_expected.to eq(%w(Things That Do Stuff)) }
         end
 
         describe '#summary' do
-          subject { swagger.paths['/pets'].summary }
+          subject { swagger.paths['/pets'].get.summary }
           it { is_expected.to eq('Gets pets') }
         end
 
         # rubocop:disable Style/LineLength
         describe '#description' do
-          subject { swagger.paths['/pets'].description }
+          subject { swagger.paths['/pets'].get.description }
           it do
             expected = <<-'EOS'.gsub(/^[ \t]+/, '').strip
             Returns all pets from the system that the user has access to
@@ -47,23 +47,23 @@ module Swagger
         # rubocop:enable Style/LineLength
 
         describe '#operationId' do
-          subject { swagger.paths['/pets'].operationId }
+          subject { swagger.paths['/pets'].get.operationId }
           it { is_expected.to eq('Get Pets') }
         end
 
         # TODO: Implement alias #operation_id
 
         describe '#produces' do
-          subject { swagger.paths['/pets'].produces }
+          subject { swagger.paths['/pets'].get.produces }
           it { is_expected.to eq(%w(application/json)) }
         end
 
         skip '#consumes' # swagger spec update needed
         describe '#parameters' do
-          subject { swagger.paths['/pets'].parameters }
+          subject { swagger.paths['/pets'].get.parameters }
           it { is_expected.to be_an(Array) }
           it 'contains Parameter objects' do
-            expect(subject.size).to eq(1)
+            expect(subject.size).to eq(2)
             subject.each do |parameter|
               expect(parameter).to be_a_kind_of(Parameter)
             end
@@ -72,7 +72,7 @@ module Swagger
         skip '#resources' # complex type
 
         describe '#schemes' do
-          subject { swagger.paths['/pets'].schemes }
+          subject { swagger.paths['/pets'].get.schemes }
           it { is_expected.to eq(%w(http https)) }
         end
       end

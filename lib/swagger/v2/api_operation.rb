@@ -3,9 +3,11 @@ require 'swagger/v2/parameter'
 module Swagger
   module V2
     class APIOperation < DefinitionSection
-      attr_accessor :path
+      extend Forwardable
+      alias_method :path, :parent
+      def_delegator :parent, :uri_template
 
-      required_section :verb, Symbol
+      # required_section :verb, Symbol
       section :summary, String
       section :description, String
       section :operationId, String
@@ -16,26 +18,35 @@ module Swagger
       section :responses, Hash # Type?
       section :schemes, Array[String]
 
-      def uri_template
-        "#{parent.host}#{parent.base_path}#{path}"
+      def initialize(hash)
+        hash[:parameters] ||= []
+        super
       end
 
-      def self.coerce(orig_hash)
-        fail TypeError, 'Can only coerce from a hash' unless orig_hash.is_a? Hash
-        top_level_parameters = orig_hash.delete :parameters
-
-        new_hash = {
-          verb: orig_hash.keys.first
-        }.merge(orig_hash.values.first).merge(parameters: top_level_parameters)
-
-        APIOperation.new(new_hash)
+      def host
+        path.api.host
       end
 
-      def to_hash
-        base_hash = super
-        base_hash.delete :verb
-        { verb => base_hash }
+      def verb
+        parent.operations.key self
       end
+
+      # def self.coerce(orig_hash)
+      #   fail TypeError, 'Can only coerce from a hash' unless orig_hash.is_a? Hash
+      #   top_level_parameters = orig_hash.delete :parameters
+
+      #   new_hash = {
+      #     verb: orig_hash.keys.first
+      #   }.merge(orig_hash.values.first).merge(parameters: top_level_parameters)
+
+      #   APIOperation.new(new_hash)
+      # end
+
+      # def to_hash
+      #   base_hash = super
+      #   base_hash.delete :verb
+      #   { verb => base_hash }
+      # end
     end
   end
 end

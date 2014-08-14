@@ -8,7 +8,7 @@ module Swagger
       let(:expected_host) { 'petstore.swagger.wordnik.com' }
       let(:expected_basePath) { '/api' }
 
-      skip 'extras' do
+      context 'extras' do
         # These are utility methods, not part of the Swagger specification
         describe '#validate' do
           it 'returns true if the Swagger definition complies with the Swagger schema' do
@@ -21,9 +21,21 @@ module Swagger
           end
         end
 
+        describe '#fully_validate' do
+          it 'returns true if the Swagger definition complies with the Swagger schema' do
+            expect(swagger.fully_validate).to eq(true)
+          end
+
+          it 'raises an exception if the Swagger definition does not comply with the Swagger schema' do
+            swagger.swagger = 2.1
+            expect { swagger.fully_validate }.to raise_error(Swagger::InvalidDefinition)
+          end
+        end
+
         describe '#uri_template', extension: true do
           it 'is combines the host and basePath into a single template' do
-            expect(swagger.uri_template).to eq(Addressable::Template.new("#{expected_host}#{expected_basePath}"))
+            # expect(swagger.uri_template).to eq(Addressable::Template.new("#{expected_host}#{expected_basePath}"))
+            expect(swagger.uri_template).to eq("#{expected_host}#{expected_basePath}")
           end
         end
       end

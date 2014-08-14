@@ -13,12 +13,12 @@ describe Swagger do
     subject(:swagger) { Swagger.load swagger_file }
 
     context 'json' do
-      let(:swagger_file) { 'swagger_spec/examples/wordnik/petstore.json' }
+      let(:swagger_file) { 'swagger_spec/examples/v2.0/json/petstore.json' }
       include_examples 'swagger loading'
     end
 
     context 'yaml' do
-      let(:swagger_file) { 'swagger_spec/examples/wordnik/petstore.json' }
+      let(:swagger_file) { 'swagger_spec/examples/v2.0/yaml/petstore.yaml' }
       include_examples 'swagger loading'
     end
   end

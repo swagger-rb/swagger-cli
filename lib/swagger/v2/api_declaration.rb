@@ -1,6 +1,6 @@
 require 'json-schema'
 require 'swagger/v2/info'
-require 'swagger/v2/api_operation'
+require 'swagger/v2/path'
 
 module Swagger
   module V2
@@ -10,7 +10,7 @@ module Swagger
     class APIDeclaration < Swagger::APIDeclaration
       required_section :swagger, Float
       required_section :info, Info
-      required_section :paths, Hash[String => APIOperation]
+      required_section :paths, Hash[String => Path]
       section :host, Swagger::URITemplate
       section :basePath, Swagger::URITemplate
       section :schemes, Array[String]
@@ -25,10 +25,10 @@ module Swagger
 
       alias_method :base_path, :basePath
 
-      def initialize(hash)
-        super
-        attach_to_apis
-      end
+      # def initialize(hash)
+      #   super
+      #   attach_to_apis
+      # end
 
       def uri_template
         # TODO: Can calculated values be safely memoized?
@@ -61,14 +61,14 @@ module Swagger
         # @swagger_schema
       end
 
-      def attach_to_apis
-        @apis ||= Set.new
-        paths.each do |path, api|
-          api.path = path
-          api.parent = self
-          @apis << api
-        end
-      end
+      # def attach_to_apis
+      #   @apis ||= Set.new
+      #   paths.each do |path, api|
+      #     api.path = path
+      #     api.parent = self
+      #     @apis << api
+      #   end
+      # end
     end
   end
 end
