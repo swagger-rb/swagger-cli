@@ -9,8 +9,10 @@
 Style/Documentation:
   Enabled: false
 
-Style/LineLength:
+Metrics/LineLength:
   Max: 120
+Metrics/MethodLength:
+  Max: 15
 
 AllCops:
   Exclude:
