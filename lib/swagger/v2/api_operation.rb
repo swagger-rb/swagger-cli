@@ -1,4 +1,5 @@
 require 'swagger/v2/parameter'
+require 'swagger/v2/response'
 
 module Swagger
   module V2
@@ -15,7 +16,7 @@ module Swagger
       section :consumes, Array[String]
       section :tags, Array[String]
       section :parameters, Array[Parameter]
-      section :responses, Hash # Type?
+      section :responses, Hash[String => Response]
       section :schemes, Array[String]
 
       def initialize(hash)
@@ -29,6 +30,12 @@ module Swagger
 
       def verb
         parent.operations.key self
+      end
+
+      def default_response
+        return nil if responses.values.nil?
+
+        responses['default'] || responses.values.first
       end
 
       # def self.coerce(orig_hash)

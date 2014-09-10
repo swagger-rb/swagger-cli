@@ -16,7 +16,7 @@ module Swagger
     end
 
     # @api private
-    def attach_to_children # rubocop:disable Style/MethodLength
+    def attach_to_children # rubocop:disable Metrics/MethodLength
       each_value do |v|
         if v.respond_to? :attach_parent
           v.attach_parent self

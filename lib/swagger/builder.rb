@@ -17,7 +17,7 @@ module Swagger
       end
     end
 
-    def self.included(dash)
+    def self.included(dash) # rubocop:disable Metrics/MethodLength
       fail TypeError, 'Bash only works on Dash' unless dash <= Hashie::Dash
       dash.extend ClassMethods
       dash.instance_variable_get('@required_properties').clear
@@ -31,22 +31,12 @@ module Swagger
       [:@key_coercions, :@value_coercions].each do | property |
         coercions = base_dash.instance_variable_get(property)
         coercions.each_pair do | key, into |
-          if into.is_a? Hash
-            into.each_pair do | sub_key, sub_into |
-              coercions[key][sub_key] = infect sub_into
-            end
-          elsif into.is_a? Array
-            coercions[key] = into.map do | sub_into |
-              infect sub_into
-            end
-          else
-            coercions[key] = infect into
-          end
+          infect_class coercions, key, into
         end if coercions
         dash.instance_variable_set(property, coercions)
       end
 
-      def [](key, &block)
+      def [](key, &_block)
         super(key) do |v|
           if block_given?
             v ||= send(:[]=, key, {})
@@ -62,6 +52,20 @@ module Swagger
     end
 
     private
+
+    def self.infect_class(coercions, key, into)
+      if into.is_a? Hash
+        into.each_pair do | sub_key, sub_into |
+          coercions[key][sub_key] = infect sub_into
+        end
+      elsif into.is_a? Array
+        coercions[key] = into.map do | sub_into |
+          infect sub_into
+        end
+      else
+        coercions[key] = infect into
+      end
+    end
 
     def self.infect(klass)
       return klass unless klass <= Hashie::Dash

@@ -1,31 +1,35 @@
 module <%= name.camelize %>
   class API < Grape::API
     prefix '<%= @swagger.base_path %>'
+    <%- @swagger.consumes.each do | type | -%>
+    content_type <%= mime_to_grape_format(type).inspect %>, <%= type.inspect %>
+    <%- end -%>
 
     <%- @swagger.paths.each do | path, path_object | -%>
     params do
       <%- path_object.parameters.each do | param |  -%>
-      <%- if param.required -%>
-      requires <%= param.name.inspect %>, type: <%= param.type.inspect %>
-      <%- else -%>
-      optional <%= param.name.inspect %>, type: <%= param.type.inspect %>
-      <%- end -%>
+      <%= grape_param param %>
       <%- end -%>
     end
-    namespace <%= path_object.path.inspect %> do
+    namespace <%= uri_template_to_grape path_object.path %> do
       <%- path_object.operations.each_value do | operation | -%>
       desc '<%= operation.summary %>'
       params do
         <%- operation.parameters.each do | param |  -%>
-        <%- if param.required -%>
-        requires <%= param.name.inspect %>, type: <%= param.type.inspect %>
-        <%- else -%>
-        optional <%= param.name.inspect %>, type: <%= param.type.inspect %>
-        <%- end -%>
+        <%= grape_param param %>
         <%- end -%>
       end
       <%= operation.verb %> do
+        <%- if options[:stub] -%>
+          <%- if operation.default_response.examples.nil? -%>
+        # No example available - implement me!
+          <%- else -%>
+        # Example response
+        <%= operation.default_response.examples.values.first.parse.inspect %>
+          <%- end -%>
+        <%- else -%>
         # Implement me!
+        <%- end -%>
       end
       <%- end -%>
     end

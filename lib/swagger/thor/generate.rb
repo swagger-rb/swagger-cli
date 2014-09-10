@@ -9,6 +9,7 @@ module Swagger
       argument :framework
       argument :name
       class_option :swagger_file, default: 'swagger.json'
+      class_option :stub, type: :boolean, default: false, desc: 'Stub services with examples from Swagger'
 
       def self.source_root
         Swagger::Thor::TEMPLATE_DIR
@@ -22,6 +23,13 @@ module Swagger
 
       def set_destination_root
         self.destination_root = name
+      end
+
+      def load_helpers
+        framework_root = source_paths.first
+        Dir["#{framework_root}/helpers/**/*.rb"].each do |helper|
+          load helper
+        end
       end
 
       def parse_swagger_file

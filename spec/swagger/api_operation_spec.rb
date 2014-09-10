@@ -31,7 +31,7 @@ module Swagger
           it { is_expected.to eq('Gets pets') }
         end
 
-        # rubocop:disable Style/LineLength
+        # rubocop:disable Metrics/LineLength
         describe '#description' do
           subject { swagger.paths['/pets'].get.description }
           it do
@@ -44,7 +44,7 @@ module Swagger
             is_expected.to eq(expected)
           end
         end
-        # rubocop:enable Style/LineLength
+        # rubocop:enable Metrics/LineLength
 
         describe '#operationId' do
           subject { swagger.paths['/pets'].get.operationId }
@@ -74,6 +74,13 @@ module Swagger
         describe '#schemes' do
           subject { swagger.paths['/pets'].get.schemes }
           it { is_expected.to eq(%w(http https)) }
+        end
+
+        describe '#default_response' do
+          subject { swagger.paths['/pets'].get.default_response }
+          it 'is selects the response labeled default' do
+            expect(subject.description).to eq('pet response (default)')
+          end
         end
       end
     end
