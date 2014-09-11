@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = Swagger::Thor::VERSION
   spec.authors       = ['Max Lincoln']
   spec.email         = ['max@devopsy.com']
-  spec.summary       = 'TODO: Write a short summary. Required.'
-  spec.description   = 'TODO: Write a longer description. Optional.'
-  spec.homepage      = ''
+  spec.summary       = 'Swagger generators'
+  spec.description   = 'Generates for Swagger APIs, using Thor.'
+  spec.homepage      = 'http://swagger.io/'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0")
