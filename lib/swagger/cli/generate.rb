@@ -1,10 +1,11 @@
-require 'swagger/thor/actions'
+require 'swagger/cli/actions'
 
 module Swagger
-  module Thor
-    class Generate < ::Thor::Group
-      include ::Thor::Actions
-      include Swagger::Thor::Actions
+  module CLI
+    class Generate < Thor::Group
+      namespace :generate
+      include Thor::Actions
+      include Swagger::CLI::Actions
 
       argument :framework
       argument :name
@@ -12,7 +13,7 @@ module Swagger
       class_option :stub, type: :boolean, default: false, desc: 'Stub services with examples from Swagger'
 
       def self.source_root
-        Swagger::Thor::TEMPLATE_DIR
+        Swagger::CLI::TEMPLATE_DIR
       end
 
       def add_framework_to_source_root

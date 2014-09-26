@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
-require 'swagger/thor'
+require 'swagger/cli'
 
-Swagger::Thor::CLI.start
+Swagger::CLI::Main.start

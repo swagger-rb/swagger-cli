@@ -1,7 +1,7 @@
 require 'active_support/core_ext/string'
 
 module Swagger
-  module Thor
+  module CLI
     module Actions
       def embed_file(source, indent = '')
         IO.read(File.join(self.class.source_root, source)).gsub(/^/, indent)
