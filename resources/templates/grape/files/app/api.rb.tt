@@ -7,7 +7,7 @@ module <%= name.camelize %>
 
     <%- @swagger.paths.each do | path, path_object | -%>
     params do
-      <%- path_object.parameters.each do | param |  -%>
+      <%- path_object.each_parameter do | param |  -%>
       <%= grape_param param %>
       <%- end -%>
     end
@@ -15,7 +15,7 @@ module <%= name.camelize %>
       <%- path_object.operations.each_value do | operation | -%>
       desc '<%= operation.summary %>'
       params do
-        <%- operation.parameters.each do | param |  -%>
+        <%- operation.each_parameter do | param |  -%>
         <%= grape_param param %>
         <%- end -%>
       end
