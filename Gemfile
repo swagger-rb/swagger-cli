@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in swagger-thor.gemspec
+# Specify your gem's dependencies in swagger-cli.gemspec
 gemspec
 gem 'pry'
 gem 'hashie', git: 'https://github.com/intridea/hashie'
