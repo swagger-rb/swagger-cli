@@ -2,7 +2,7 @@ require 'thor'
 require 'swagger'
 require 'swagger/cli/version'
 require 'swagger/cli/generate'
-require 'swagger/cli/convert'
+# require 'swagger/cli/convert'
 
 module Swagger
   module CLI
