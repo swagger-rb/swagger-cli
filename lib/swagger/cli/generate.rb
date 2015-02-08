@@ -17,8 +17,11 @@ module Swagger
       end
 
       def add_framework_to_source_root
-        source_paths.map do | path |
-          path << "/#{framework}"
+        @framework_path = Dir[File.expand_path(framework, Dir.pwd), File.expand_path(framework, Swagger::CLI::TEMPLATE_DIR)].first
+        abort "Template #{framework} not found in local directory or built-in templates" unless @framework_path
+        # Hack... but I don't know why I can't pick a source_root based on arguments
+        source_paths.map do |path|
+          path.gsub!(/\A.*\Z/, @framework_path)
         end
       end
 
@@ -27,8 +30,7 @@ module Swagger
       end
 
       def load_helpers
-        framework_root = source_paths.first
-        Dir["#{framework_root}/helpers/**/*.rb"].each do |helper|
+        Dir["#{@framework_path}/helpers/**/*.rb"].each do |helper|
           load helper
         end
       end
